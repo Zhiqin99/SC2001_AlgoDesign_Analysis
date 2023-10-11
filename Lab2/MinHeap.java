@@ -2,58 +2,50 @@
  * MinHeap
  */
 public class MinHeap {
-    // this whole file is a WIP pls dont touch :)
-    public static void heapify(int[] arr, int root ){
-        /*
-         * if H is not leaf
-            heapify left subtree
-            heapify right subtree
-            k = root of H
-            fix heap
-         */
-        int k;
-        for(int i = 0; i < arr.length; i++){
-            int j = i+1;
-            if(2*j > arr.length){
-                heapify(arr, 2*j);
-                heapify(arr, 2*j+1);
-                k = j;
-                heapSort(arr, k);
+    public static void heapSort(int[] arr){
+        int len = arr.length;
+        
+        heapify(arr, len);
+
+        int end = len-1;
+        while(end > 0){
+            int temp = arr[end];
+            arr[end] = arr[0];
+            arr[0] = temp;
+
+            fixHeap(arr, 0, end-1);
+            end--;
+        }
+    }
+
+    public static void heapify(int[] arr, int count){
+        int start = (count - 2) / 2;
+
+        while(start >= 0){
+            fixHeap(arr, start, count-1);
+            start--;
+        }
+    }
+
+    public static void fixHeap(int[] arr, int start, int end){
+        int root = start;
+        while((root*2+1) <= end){
+            int child = root * 2 + 1;
+            
+            if(child+1 <= end && arr[child] < arr[child+1]){
+                child += 1;
+            }
+
+            if(arr[root] < arr[child]){
+                int temp = arr[root];
+                arr[root] = arr[child];
+                arr[child] = temp;
+                root = child;
+            }
+            else{
+                return;
             }
         }
-    }
-
-    public static void heapSort(){
-        int max;
-        for(int i = arr.length-1; i > 0; i++){
-            max = arr[0];
-            arr = deleteIndex(arr, 0);
-            arr[i] = max;
-        }
-    }
-
-    public static int getMax(int[] arr){
-        return arr[0];
-    }
-    
-    public static void fixHeap(int[] arr, int k, int H){
-        if(2*j > arr.length){
-            int parent = Math.floor(H/2);
-            arr[parent] = k;
-        }
-        else{
-            int left = 2*H;
-            int right = 2*H + 1;
-        }
-    }
-
-    public static void deleteMax(int[] arr){
-        int k = arr[arr.length-1];
-        int[] res = new int[arr.length-1];
-        for(int i = 0; i < arr.length; i++){
-            res[i] = arr[i];
-        }
-        fixHeap(res, k, 1);
     }
     
 }

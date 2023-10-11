@@ -22,8 +22,19 @@ public class AdjMatrix extends Graph {
     @Override
     public void printGraph(){
         for(int i = 0; i < this.getV(); i++){
+            if(i == 0){
+                System.out.print("   ");
+                for(int j = 0; j < this.getV(); j++){
+                    // System.out.print((j+1)+"\t");
+                    System.out.printf("%4s",(j+1));
+                }
+                printLine(this.getV()*5);
+            }
+            System.out.printf("%2s |", i+1);
             for(int j = 0; j < this.getV(); j++){
-                System.out.print(matrix[i][j]+" ");
+                // System.out.print(matrix[i][j]+"\t");
+                System.out.printf("%4s", matrix[i][j]);
+                
             }
             System.out.println("");
         }
@@ -34,8 +45,8 @@ public class AdjMatrix extends Graph {
         int start, end, weight;
 
         for(int i = 0; i < e; i++){
-            start = Math.floor(Math.random() * getV());
-            end = Math.floor(Math.random() * getV());
+            start = (int) Math.floor(Math.random() * getV());
+            end = (int) Math.floor(Math.random() * getV());
 
             if(start == end){ //make sure start doesnt == end
                 end++;
@@ -44,10 +55,20 @@ public class AdjMatrix extends Graph {
                 }
             }
 
-            weight = Math.floor(Math.random() * 10) + 1;
+            weight = (int) Math.floor(Math.random() * 10) + 1;
             addEdge(start, end, weight);
         }
     }
 
+    private void printLine(int len){
+        System.out.print("\n");
+        for(int i = 0; i < len; i++){
+            System.out.print("-");
+        }
+        System.out.print("\n");
+    }
 
+    public void dijkstra(){
+        //idk
+    }
 }
