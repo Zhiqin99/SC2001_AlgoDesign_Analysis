@@ -68,7 +68,47 @@ public class AdjMatrix extends Graph {
         System.out.print("\n");
     }
 
-    public void dijkstra(){
-        //idk
-    }
+    public int [] adjMatDijkstra(int [] [] matrix , int source){
+	    	   boolean visited [] = new boolean[super.getV()];
+	    	   int dist [] = new int [super.getV()];
+	    	   
+	    	   for(int i = 0 ; i < super.getV() ; i++) {
+	    		   visited[i] = false;
+	    		   dist[i] = Integer.MAX_VALUE;
+	    	   }
+	    	   dist[source] = 0;
+	    	   
+	    	   
+	    	   for(int i = 0 ; i < super.getV() ; i++) {
+	    		   int min = nextMin(dist , visited);
+	    		   
+	    		   visited[min] = true;
+	    		   
+	    		   for(int j = 0 ; j < super.getV() ; j++) {
+	    			   if(matrix[min][j] > 0 && dist[j] > matrix[min][j] + dist[min]){
+	    				   dist[j] = matrix[min][j] + dist[min];
+	    			   }
+	    		   }
+	    	   }
+	    	   
+	    	   
+	    	return dist;
+	       }
+	        
+	       //helper function to get next min
+	private int nextMin(int [] distance , boolean [] visited){
+	    	int min = Integer.MAX_VALUE;
+	    	int min_index = -1;
+	    	   
+	    	for(int i = 0 ; i < super.getV() ; i++) {
+	    		if(visited[i] == false && distance[i] < min) {
+	    			min = distance[i];
+	    			min_index = i;
+	    		   }
+	    	   }
+	    return min_index;
+	  }
+	        
+	        
+
 }
