@@ -15,6 +15,7 @@ public class AdjMatrix extends Graph {
     @Override
     public void addEdge(int start, int end, int weight) {
         matrix[start][end] = weight;
+        matrix[end][start] = weight;
         this.incrementE();
         System.out.println("Edge between " + start + " and " + end + " with weight " + weight + " added");
     }
