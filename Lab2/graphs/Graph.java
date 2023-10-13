@@ -4,8 +4,8 @@
  */
 
 public class Graph {
-    private int V; // vertices
-    private int E; // edges
+    int V; // vertices
+    int E; // edges
     
     // Constructor
     public Graph(int v){

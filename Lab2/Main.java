@@ -1,46 +1,62 @@
 
 import java.util.*;
+
 public class Main {
-        public static void main(String[] args) {
-        List<AdjMatrix> graphs = new ArrayList<>();
-        List<ArrayList<ArrayList<Node>>> adjLists = new ArrayList<>();
-    
-        for (int i = 5; i <= 1000; i += 5) {
-          int vertices = i;
-          int edges = i * 2;
-    
-          // Create an adjacency matrix for the graph.
-          AdjMatrix graph = new AdjMatrix(vertices);
-          graph.randomGraph(edges);
-    
-          // Convert the adjacency matrix to an adjacency list.
-          ArrayList<ArrayList<Node>> adjList = AdjList.convert(graph.getMatirx());
-    
-          // Add the adjacency matrix and adjacency list to the corresponding lists.
-          graphs.add(graph);
-          adjLists.add(adjList);
-        }
-    
-        // Find the time to excute Dijkstra's algorithm.
-        long[] timesAdjMatrix = new long[graphs.size()];
-        long[] timesAdjList = new long[graphs.size()];
-    
-        for (int i = 0; i < graphs.size(); i++) {
-            long startTimeAdjMatrix = System.nanoTime();
-            int[] distancesAdjMatrix = graphs.get(i).adjMatDijkstra(graphs.get(i).getMatirx(), 0);
-            long endTimeAdjMatrix = System.nanoTime();
-            timesAdjMatrix[i] = (endTimeAdjMatrix - startTimeAdjMatrix)/1000;
-    
-            long startTimeAdjList = System.nanoTime();
-            int[] distancesAdjList = DijkstraMinHeap.dijkstra(adjLists.get(i), 0);
-            long endTimeAdjList = System.nanoTime();
-            timesAdjList[i] = (endTimeAdjList - startTimeAdjList)/1000;
-        }
-    
-        // Print the time taken for each algorithm function on each graph.
-        System.out.println("Vertices\tEdges\tTime AdjMatrix (μs)\tTime AdjList (μs)");
-        for (int i = 0; i < graphs.size(); i++) {
-            System.out.println(graphs.get(i).getV() + "\t\t" + graphs.get(i).getE() + "\t\t" + timesAdjMatrix[i] + "\t\t" + timesAdjList[i]);
+    public static void main(String[] args) {
+        
+        //loop until 300 in intervals of 10
+        int max = 300;
+        int interval = 10;
+
+        // trivial case to remove JIT overhead
+        ArrayList<ArrayList<Node>> a = AdjList.convert(new int[1][1]);
+        DijkstraMinHeap.dijkstra(a, 0);
+        AdjMatrix aa = new AdjMatrix(2);
+        aa.randomGraph(1);
+        
+        //test sparse graph
+        System.out.println("\n-----Sparse-------------------");
+        Test(max, interval, 5);
+
+        //test medium graph
+        System.out.println("\n-----Medium-------------------");
+        Test(max, interval, 3);
+
+        //test full graph
+        System.out.println("\n-----Full---------------------");
+        Test(max, interval, 2);
+
+    }
+
+    // 
+    public static void Test(int max, int interval, int E){
+        int repeat = 1000; //loop each case 1k times, PLS change if it takes too long
+
+        for(int i = 10; i <= max; i+=interval){
+            float timeL = 0, timeM = 0;
+            AdjMatrix graph = new AdjMatrix(i);
+
+            //repeat the same size
+            for(int b = 0; b < repeat; b++){         
+                //init graphs
+                graph.randomGraph((int)Math.floor(i*(i/E)));
+                ArrayList<ArrayList<Node>> adjList = AdjList.convert(graph.getMatirx());
+
+                // matrix
+                long startTimeAdjMatrix = System.nanoTime();
+                int[] distMatrix = graph.adjMatDijkstra(graph.getMatirx(), 0);
+                long endTimeAdjMatrix = System.nanoTime();
+                timeM += (endTimeAdjMatrix - startTimeAdjMatrix) / 1000;
+
+                // list
+                long startTimeAdjList = System.nanoTime();
+                int[] distList = DijkstraMinHeap.dijkstra(adjList, 0);
+                long endTimeAdjList = System.nanoTime();
+                timeL += (endTimeAdjList - startTimeAdjList) / 1000;
+            }
+
+            //get outputs here
+            System.out.println("size:"+ graph.getV() +"\tE:"+ graph.getE() +"\tmatrix:"+(timeM/repeat)+"\tlist:"+(timeL/repeat));
         }
     }
 }

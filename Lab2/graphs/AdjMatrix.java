@@ -17,7 +17,7 @@ public class AdjMatrix extends Graph {
         matrix[start][end] = weight;
         matrix[end][start] = weight;
         this.incrementE();
-        System.out.println("Edge between " + start + " and " + end + " with weight " + weight + " added");
+        // System.out.println("Edge between " + start + " and " + end + " with weight " + weight + " added");
     }
 
     @Override
@@ -43,6 +43,9 @@ public class AdjMatrix extends Graph {
 
     // create random graph with e edges, weights 1 to 10
     public void randomGraph(int e) {
+        this.matrix = new int[V][V]; //reset graph
+        this.E = 0;
+
         int start, end, weight;
 
         for (int i = 0; i < e; i++) {
@@ -50,14 +53,21 @@ public class AdjMatrix extends Graph {
             end = (int) Math.floor(Math.random() * getV());
 
             if (start == end) { // make sure start doesnt == end
-                end++;
-                if (end > getV() - 1) {
-                    end = 0;
-                }
+                i--;
+                continue;
             }
 
-            weight = (int) Math.floor(Math.random() * 10) + 1;
-            addEdge(start, end, weight);
+            if(matrix[start][end] == 0){
+                weight = (int) Math.floor(Math.random() * 10) + 1;
+                addEdge(start, end, weight);
+            }
+            else{
+                i--;
+            }
+
+            if(E >= (V*(V-1)/2)){
+                break;
+            }
         }
     }
 
@@ -87,7 +97,7 @@ public class AdjMatrix extends Graph {
 
             visited[min] = true;
 
-            for (int j = 0; j < super.getV()-1; j++) {
+            for (int j = 0; j < super.getV(); j++) {
                 if (matrix[min][j] > 0 && dist[j] > matrix[min][j] + dist[min]) {
                     dist[j] = matrix[min][j] + dist[min];
                 }
