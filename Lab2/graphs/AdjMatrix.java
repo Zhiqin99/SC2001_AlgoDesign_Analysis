@@ -81,10 +81,13 @@ public class AdjMatrix extends Graph {
 
         for (int i = 0; i < super.getV(); i++) {
             int min = nextMin(dist, visited);
+            if (min == -1) {
+                return dist;
+            }
 
             visited[min] = true;
 
-            for (int j = 0; j < super.getV(); j++) {
+            for (int j = 0; j < super.getV()-1; j++) {
                 if (matrix[min][j] > 0 && dist[j] > matrix[min][j] + dist[min]) {
                     dist[j] = matrix[min][j] + dist[min];
                 }
