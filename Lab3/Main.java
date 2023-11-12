@@ -1,33 +1,27 @@
 class Knapsack{
 
+    private static int max(int i, int j){ 
+        return (i > j) ? i : j; 
+    } 
+
     static int getKnapsack(int C, int n, int[] w, int[] p){
-        int profit[][] = new int[C+1][n+1];
-
-        for(int i = 0; i <= n; i++) 
-            profit[0][i] = 0;
-        for(int i = 0; i <= C; i++)  
-            profit[i][0] = 0;
-
-        for(int i = 1; i <= C; i++){
-            for(int j = 1; j <= n; j++){
-                profit[i][j] = profit[i][j-1];
-                if(w[j-1] < i){
-                    if (profit[i][j] < profit[i-w[j-1]][j-1] + p[j-1])
-                        profit[i][j] = profit[i-w[j-1]][j-1] + p[j-1];
-                }
-            }
-        }
+        int profit[] = new int[C + 1]; 
+          
+        for(int i = 0; i <= C; i++){ 
+            for(int j = 0; j < n; j++){ 
+                if(w[j] <= i){ 
+                    profit[i] = max(profit[i], profit[i - w[j]] + p[j]); 
+                } 
+            } 
+        } 
         printarr(profit);
-        return(profit[C][n]);
+        return profit[C]; 
     }
 
-    static void printarr(int[][] arr){
+    static void printarr(int[] arr){
         for(int i = 0; i < arr.length; i++){
-            for(int j = 0; j < arr[i].length; j++){
-                System.out.print(arr[i][j] + "  ");
-            }
-            System.out.println("");
-        }
+            System.out.print(arr[i] + "  ");
+        }System.out.println("");
     }
 
     public static void main(String args[]){
